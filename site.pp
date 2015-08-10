@@ -2,6 +2,9 @@ node default {
 
   if $::kernel == 'Linux' {
 
+    $listen_address = '*'
+    $listen_port = '80'
+
     Ini_setting <| tag == 'php.ini' |> {
       notify => Service['httpd'],
     }
@@ -13,6 +16,16 @@ node default {
 
     package { 'httpd':
       ensure => installed,
+    }
+
+    file { '/etc/httpd/conf/ports/conf':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => inline_template('Listen <%= @listen_address %>:<%= @listen_port %>'),
+      require => Package['httpd'],
+      notify  => Service['httpd'],
     }
 
     service { 'mariadb':
