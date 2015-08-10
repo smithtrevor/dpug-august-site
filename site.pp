@@ -29,6 +29,15 @@ node default {
       require => Package['php'],
     }
 
+    ini_setting { 'php_timezone':
+      ensure  => present,
+      path    => '/etc/php.ini',
+      section => 'Date',
+      setting => 'date.timezone',
+      value   => 'America/Detroit',
+      require => File['/etc/php.ini'],
+    }
+
   }
 
 }
