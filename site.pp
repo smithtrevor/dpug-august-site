@@ -1,6 +1,10 @@
 node default {
 
   if $::kernel == 'Linux' {
+
+    Ini_setting <| tag == 'php.ini' |> {
+      notify => Service['httpd'],
+    }
       
     service { 'httpd':
       ensure  => running,
@@ -36,6 +40,7 @@ node default {
       setting => 'date.timezone',
       value   => 'America/Detroit',
       require => File['/etc/php.ini'],
+      tag     => 'php.ini',
     }
 
   }
