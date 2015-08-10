@@ -18,12 +18,22 @@ node default {
       ensure => installed,
     }
 
-    file { '/etc/httpd/conf/ports/conf':
+    file { '/etc/httpd/conf/ports.conf':
       ensure  => file,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
       content => inline_template('Listen <%= @listen_address %>:<%= @listen_port %>'),
+      require => Package['httpd'],
+      notify  => Service['httpd'],
+    }
+    
+    file { '/etc/httpd/conf/httpd.conf':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      source  => '/vagrant/httpd.conf',
       require => Package['httpd'],
       notify  => Service['httpd'],
     }
