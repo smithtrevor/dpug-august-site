@@ -24,6 +24,11 @@ node default {
       ensure => installed,
     }
 
+    file { '/etc/php.ini':
+      ensure  => file,
+      require => Package['php'],
+    }
+
   }
 
 }
