@@ -3,7 +3,8 @@ node default {
   if $::kernel == 'Linux' {
       
     service { 'httpd':
-      ensure => running,
+      ensure  => running,
+      require => Package['httpd'],
     }
 
     package { 'httpd':
@@ -16,6 +17,7 @@ node default {
 
     package { 'mariadb':
       ensure => installed,
+      before => Service['mariadb'],
     }
 
     package { 'php':
