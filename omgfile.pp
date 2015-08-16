@@ -2,11 +2,13 @@ define omgfile (
   $omg             => 'omg',
 ){
 
-  file { '/tmp':
-    ensure => directory,
+  unless defined(File['/tmp']) {
+    file { '/tmp':
+      ensure => directory,
+    }
   }
 
-  file { "omgfile":
+  file { "omgfile::${name}":
     ensure  => file,
     path    => "/tmp/${name}"
     require => File['/tmp'],
